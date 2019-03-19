@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:interview/bloc/users_bloc.dart';
 import 'package:interview/models/users_model.dart';
 import 'package:interview/ui/user_details.dart';
+import 'package:interview/ui/user_form.dart';
 
 class UsersList extends StatefulWidget {
   @override
@@ -40,6 +41,11 @@ class UserlistState extends State<UsersList> {
           return Center(child: CircularProgressIndicator());
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => openFormPage(),
+        tooltip: "Add a User",
+        child: Icon(Icons.add),
+      ),
     );
   }
 
@@ -52,7 +58,16 @@ class UserlistState extends State<UsersList> {
           return GridTile(
             child: InkResponse(
               enableFeedback: true,
-              child: Text(snapshot.data.usersModel[index].name),
+              child: Column(
+                children: <Widget>[
+                  Image.asset("assets/img/user.png",
+                  height: 40.0,),
+                  Text(snapshot.data.usersModel[index].name),
+                  Text(snapshot.data.usersModel[index].userName),
+                  Text(snapshot.data.usersModel[index].email)
+                    
+                ],
+              ),
               onTap: () => openDetailPage(snapshot.data, index),
             ),
           );
@@ -73,6 +88,15 @@ class UserlistState extends State<UsersList> {
           email: data.usersModel[index].email,
           
         );
+      }),
+    );
+  }
+
+  openFormPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) {
+        return UserForm();
       }),
     );
   }
